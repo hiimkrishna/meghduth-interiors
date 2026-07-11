@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import { ArrowUpRight } from "lucide-react"; // Optional: Using lucide-react for the arrow
+import { ArrowUpRight } from "lucide-react";
 
 const SERVICES = [
   {
@@ -29,44 +29,52 @@ const SERVICES = [
 
 const ServicesPreview = () => {
   return (
-    <section className="bg-white py-24 lg:py-32">
+    // Mobile Optimization: Tamed section padding (py-16 to py-24) to prevent excessive empty space
+    <section className="bg-white py-16 sm:py-24 lg:py-32">
       <Container>
-        {/* Header */}
-        <div className="mb-16 max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500 mb-3">
+        {/* Header Block */}
+        <div className="mb-10 sm:mb-16 max-w-2xl px-4 sm:px-0">
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-neutral-500 mb-2 sm:mb-3">
             Our Services
           </p>
-          <h2 className="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
+          <h2 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl md:text-5xl text-balance">
             Designed for the way you live and work.
           </h2>
         </div>
 
-        {/* Services List */}
-        <div className="divide-y divide-neutral-200 border-t border-neutral-200">
+        {/* Services Interactive Rows */}
+        <div className="divide-y divide-neutral-200 border-t border-neutral-200 px-4 sm:px-0">
           {SERVICES.map((service) => (
             <div
               key={service.id}
-              className="group flex flex-col md:flex-row md:items-start justify-between py-8 transition-colors duration-300 hover:bg-neutral-50/50 px-4 -mx-4 rounded-lg"
+              className="group flex flex-col md:flex-row md:items-start justify-between py-6 sm:py-8 transition-colors duration-300 hover:bg-neutral-50/70 rounded-lg md:px-4 md:-mx-4"
             >
-              {/* Number and Title */}
-              <div className="flex items-start gap-6 md:w-1/3">
-                <span className="text-sm font-medium text-neutral-400 mt-1">
-                  {service.id}
-                </span>
-                <h3 className="text-xl font-semibold text-neutral-900">
-                  {service.title}
-                </h3>
+              {/* Left Column: Number, Title, and Mobile Arrow Icon */}
+              <div className="flex items-start justify-between gap-4 w-full md:w-1/3">
+                <div className="flex items-start gap-4 sm:gap-6">
+                  <span className="text-xs sm:text-sm font-medium text-neutral-400 mt-1 select-none">
+                    {service.id}
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-semibold text-neutral-900 pr-2">
+                    {service.title}
+                  </h3>
+                </div>
+
+                {/* Arrow Icon variant shown only on smaller viewports */}
+                <div className="text-neutral-400 group-hover:text-neutral-900 transition-colors duration-200 md:hidden mt-1 flex-shrink-0">
+                  <ArrowUpRight className="w-5 h-5" />
+                </div>
               </div>
 
-              {/* Description */}
-              <div className="mt-2 md:mt-0 md:w-1/2 pr-8">
-                <p className="text-base text-neutral-600 leading-relaxed">
+              {/* Center Column: Description Content */}
+              <div className="mt-2 md:mt-0 w-full md:w-1/2 md:pr-8 pl-8 md:pl-0">
+                <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">
                   {service.description}
                 </p>
               </div>
 
-              {/* Arrow */}
-              <div className="mt-4 md:mt-0 self-end md:self-center text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200">
+              {/* Right Column: Desktop-only Arrow Icon Layout */}
+              <div className="hidden md:block text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200 self-center flex-shrink-0">
                 <ArrowUpRight className="w-6 h-6" />
               </div>
             </div>

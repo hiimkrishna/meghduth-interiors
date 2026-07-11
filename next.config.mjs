@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  // Enforce Next.js image optimization pipeline rules
+  images: {
+    qualities: [75, 80],
+  },
 };
 
 export default nextConfig;

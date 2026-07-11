@@ -1,17 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useCallback, useRef } from "react";
 import heroSlides from "@/data/heroSlides";
-
 import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
 import HeroProgress from "./HeroProgress";
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
+  // Memoize handleChange to prevent unnecessary sub-component rerenders
+  const handleChange = useCallback((index) => {
+    setCurrent(index);
+  }, []);
+
+  // Handle slide transitions automatically
   useEffect(() => {
+    if (!heroSlides.length) return;
+
     const timer = setTimeout(() => {
       setCurrent((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1));
     }, 9000);
@@ -19,12 +27,55 @@ export default function Hero() {
     return () => clearTimeout(timer);
   }, [current]);
 
-  const handleChange = (index) => {
-    setCurrent(index);
+  // Mobile Optimization: Fix real mobile layout issues by using SVH/DVH or dynamically setting heights
+  useEffect(() => {
+    const setDynamicHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+
+    setDynamicHeight();
+    window.addEventListener("resize", setDynamicHeight);
+    return () => window.removeEventListener("resize", setDynamicHeight);
+  }, []);
+
+  // Mobile Touch Gestures (Swiping)
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const swipeThreshold = 50; // minimum distance in pixels to trigger a swipe
+    const difference = touchStartX.current - touchEndX.current;
+
+    if (difference > swipeThreshold) {
+      // Swiped Left -> Next Slide
+      setCurrent((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1));
+    } else if (difference < -swipeThreshold) {
+      // Swiped Right -> Previous Slide
+      setCurrent((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
+    }
+
+    // Reset values
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section
+      className="relative overflow-hidden w-full"
+      style={{
+        height: "calc(var(--vh, 1vh) * 100)",
+        minHeight: "-webkit-fill-available",
+      }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <HeroBackground slide={heroSlides[current]} />
 
       <HeroContent slide={heroSlides[current]} />
