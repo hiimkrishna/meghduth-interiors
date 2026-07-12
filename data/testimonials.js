@@ -1,7 +1,7 @@
 const testimonials = [
   {
     id: 1,
-    quote:
+    text:
       "Meghdut transformed our apartment into a space that feels luxurious yet incredibly comfortable. Every detail was thoughtfully executed.",
     name: "Sarah Ahmed",
     designation: "Residential Client",
@@ -10,7 +10,7 @@ const testimonials = [
   },
   {
     id: 2,
-    quote:
+    text:
       "Their professionalism and design expertise exceeded our expectations. The office now truly reflects our brand identity.",
     name: "Arif Hasan",
     designation: "Commercial Client",
@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     id: 3,
-    quote:
+    text:
       "From concept to execution, the entire experience was seamless. We couldn't be happier with the result.",
     name: "Nusrat Jahan",
     designation: "Homeowner",

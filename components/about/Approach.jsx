@@ -1,9 +1,39 @@
-import React from 'react'
+import Container from "@/components/ui/Container";
+import SectionHeader from "@/components/common/SectionHeader";
+import SplitSection from "@/components/common/SplitSection";
 
-const Approach = () => {
+const Approach = ({ data }) => {
   return (
-    <div>Approach</div>
-  )
-}
+    <section
+      className="
+        py-20
+        sm:py-24
+        lg:py-32
+      "
+    >
+      <Container>
+        <SectionHeader
+          eyebrow={data.eyebrow}
+          title={data.title}
+          description={data.description}
+        />
 
-export default Approach
+        <div className="mt-20 space-y-24">
+          {data.steps.map((step) => (
+            <SplitSection
+              key={step.number}
+              label={step.number}
+              title={step.title}
+              description={step.description}
+              image={step.image}
+              imageAlt={step.imageAlt}
+              reverse={step.reverse}
+            />
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+export default Approach;
