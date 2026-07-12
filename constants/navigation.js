@@ -4,16 +4,24 @@ const navigation = [
     href: "/",
   },
   {
-    title: "Projects",
-    href: "#projects",
+    title: "About",
+    href: "/about",
   },
   {
     title: "Services",
-    href: "#services",
+    href: "/services",
+  },
+  {
+    title: "Projects",
+    href: "/projects",
+  },
+  {
+    title: "Team",
+    href: "/team",
   },
   {
     title: "Contact",
-    href: "#contact",
+    href: "/contact",
   },
 ];
 

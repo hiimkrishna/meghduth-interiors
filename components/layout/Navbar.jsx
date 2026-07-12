@@ -181,7 +181,10 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ delay: 0.15 }}
-              className="mt-auto w-full"
+              className="    mt-auto
+    w-full
+    pt-8
+    pb-[max(1.5rem,env(safe-area-inset-bottom))]"
             >
               <Button
                 href="/contact"
@@ -190,6 +193,8 @@ export default function Navbar() {
                 Free Consultation
               </Button>
             </motion.div>
+
+            
           </motion.div>
         )}
       </AnimatePresence>
