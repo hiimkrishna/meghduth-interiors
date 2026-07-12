@@ -69,7 +69,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    // 🛠️ FIX 1: Elevated global header priority to z-[60] so it dominates all page sections
+    <header className="fixed inset-x-0 top-0 z-[60] select-none">
       <nav
         className={`transition-all duration-300 ease-out text-white ${
           isScrolled || isOpen
@@ -80,7 +81,6 @@ export default function Navbar() {
         <Container className="h-full">
           <div className="flex h-full items-center justify-between">
             {/* Logo */}
-
             <Link href="/" className="relative z-50 flex flex-col">
               <span
                 className="
@@ -89,7 +89,6 @@ export default function Navbar() {
                   font-semibold
                   tracking-wide
                   text-white
-
                   sm:text-3xl
                 "
               >
@@ -103,7 +102,6 @@ export default function Navbar() {
                   uppercase
                   tracking-[0.4em]
                   text-zinc-400
-
                   sm:text-[10px]
                 "
               >
@@ -112,13 +110,11 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-
             <ul
               className="
                 hidden
                 items-center
                 gap-8
-
                 lg:flex
                 xl:gap-10
               "
@@ -140,81 +136,88 @@ export default function Navbar() {
             </ul>
 
             {/* Desktop CTA */}
-
             <div className="hidden lg:block">
               <Button href="/contact" variant="secondary">
                 Free Consultation
               </Button>
             </div>
-            {/* Mobile Menu Button */}
 
-            <button
-              type="button"
-              onClick={() => setIsOpen((prev) => !prev)}
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isOpen}
-              className="
-                relative
-                z-50
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-
-                text-white
-
-                lg:hidden
-              "
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 22 22"
-                className="stroke-current fill-none stroke-[2] stroke-linecap-round"
-              >
-                {/* Top */}
-
-                <motion.path
-                  animate={
-                    isOpen ? { d: "M 4 17 L 18 4" } : { d: "M 3 5 L 19 5" }
-                  }
-                  transition={{ duration: 0.25 }}
-                />
-
-                {/* Middle */}
-
-                <motion.path
-                  d="M 3 11 L 19 11"
-                  animate={
-                    isOpen
-                      ? {
-                          opacity: 0,
-                        }
-                      : {
-                          opacity: 1,
-                        }
-                  }
-                  transition={{ duration: 0.2 }}
-                />
-
-                {/* Bottom */}
-
-                <motion.path
-                  animate={
-                    isOpen ? { d: "M 4 4 L 18 17" } : { d: "M 3 17 L 19 17" }
-                  }
-                  transition={{ duration: 0.25 }}
-                />
-              </svg>
-            </button>
+            {/* Placeholder to reserve space and keep alignment perfect */}
+            <div className="w-10 h-10 lg:hidden" />
           </div>
         </Container>
       </nav>
 
-      {/* Mobile Drawer */}
+      {/* 
+        🛠️ FIX 2: Moved the trigger completely out of the flex row layout 
+        and pinned it as a fixed-position layer at z-[70] to stop overlap disappearance bugs.
+      */}
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
+        className="
+          fixed
+          right-4
+          top-3
+          z-[70]
+          flex
+          h-10
+          w-10
+          items-center
+          justify-center
+          text-white
+          lg:hidden
+          focus:outline-none
+          pointer-events-auto
+          sm:right-6
+          transition-all
+          duration-300
+          icon-button-alignment
+        "
+        style={{
+          top: isScrolled || isOpen ? "12px" : "20px",
+        }}
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 22 22"
+          className="stroke-current fill-none stroke-[2] stroke-linecap-round"
+        >
+          {/* Top Line */}
+          <motion.path
+            animate={isOpen ? { d: "M 4 17 L 18 4" } : { d: "M 3 5 L 19 5" }}
+            transition={{ duration: 0.25 }}
+          />
 
-      <AnimatePresence>
+          {/* Middle Line */}
+          <motion.path
+            d="M 3 11 L 19 11"
+            animate={
+              isOpen
+                ? {
+                    opacity: 0,
+                  }
+                : {
+                    opacity: 1,
+                  }
+            }
+            transition={{ duration: 0.2 }}
+          />
+
+          {/* Bottom Line */}
+          <motion.path
+            animate={isOpen ? { d: "M 4 4 L 18 17" } : { d: "M 3 17 L 19 17" }}
+            transition={{ duration: 0.25 }}
+          />
+        </svg>
+      </button>
+
+      {/* Mobile Drawer */}
+      {/* 🛠️ FIX 3: Added mode="wait" to let exit timelines completely clean up before unmounting */}
+      <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
             initial={{
@@ -236,16 +239,12 @@ export default function Navbar() {
               fixed
               inset-0
               z-40
-
               flex
               flex-col
-
               bg-neutral-950
-
               px-6
               pt-24
               pb-8
-
               lg:hidden
             "
           >
@@ -257,8 +256,7 @@ export default function Navbar() {
                 justify-between
               "
             >
-              {/* Navigation */}
-
+              {/* Navigation Links */}
               <ul
                 className="
                   flex
@@ -289,7 +287,7 @@ export default function Navbar() {
                 ))}
               </ul>
 
-              {/* CTA */}
+              {/* Consultation Target Button */}
               <motion.div
                 initial={{
                   opacity: 0,
