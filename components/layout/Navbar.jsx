@@ -69,7 +69,6 @@ export default function Navbar() {
   };
 
   return (
-    // 🛠️ FIX 1: Elevated global header priority to z-[60] so it dominates all page sections
     <header className="fixed inset-x-0 top-0 z-[60] select-none">
       <nav
         className={`transition-all duration-300 ease-out text-white ${
@@ -148,10 +147,7 @@ export default function Navbar() {
         </Container>
       </nav>
 
-      {/* 
-        🛠️ FIX 2: Moved the trigger completely out of the flex row layout 
-        and pinned it as a fixed-position layer at z-[70] to stop overlap disappearance bugs.
-      */}
+      {/* 🛠️ FIXED TRIGGER: Removed broken class, forced absolute dimensions */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -160,7 +156,6 @@ export default function Navbar() {
         className="
           fixed
           right-4
-          top-3
           z-[70]
           flex
           h-10
@@ -174,10 +169,9 @@ export default function Navbar() {
           sm:right-6
           transition-all
           duration-300
-          icon-button-alignment
         "
         style={{
-          top: isScrolled || isOpen ? "12px" : "20px",
+          top: isScrolled || isOpen ? "12px" : "20px"
         }}
       >
         <svg
@@ -188,7 +182,9 @@ export default function Navbar() {
         >
           {/* Top Line */}
           <motion.path
-            animate={isOpen ? { d: "M 4 17 L 18 4" } : { d: "M 3 5 L 19 5" }}
+            animate={
+              isOpen ? { d: "M 4 17 L 18 4" } : { d: "M 3 5 L 19 5" }
+            }
             transition={{ duration: 0.25 }}
           />
 
@@ -209,14 +205,15 @@ export default function Navbar() {
 
           {/* Bottom Line */}
           <motion.path
-            animate={isOpen ? { d: "M 4 4 L 18 17" } : { d: "M 3 17 L 19 17" }}
+            animate={
+              isOpen ? { d: "M 4 4 L 18 17" } : { d: "M 3 17 L 19 17" }
+            }
             transition={{ duration: 0.25 }}
           />
         </svg>
       </button>
 
       {/* Mobile Drawer */}
-      {/* 🛠️ FIX 3: Added mode="wait" to let exit timelines completely clean up before unmounting */}
       <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div

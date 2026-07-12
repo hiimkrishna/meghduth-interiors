@@ -8,6 +8,10 @@ import HeroProgress from "./HeroProgress";
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
+
+  // 🛠️ FIX 1: Track client-side mounting cycle to bypass server height mismatch conflicts
+  const [mounted, setMounted] = useState(false);
+
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -35,6 +39,10 @@ export default function Hero() {
     };
 
     setDynamicHeight();
+
+    // Lock mount status to true only AFTER layout metrics are written cleanly into the DOM tree
+    setMounted(true);
+
     window.addEventListener("resize", setDynamicHeight);
     return () => window.removeEventListener("resize", setDynamicHeight);
   }, []);
@@ -76,15 +84,21 @@ export default function Hero() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <HeroBackground slide={heroSlides[current]} />
-
-      <HeroContent slide={heroSlides[current]} />
-
-      <HeroProgress
-        slides={heroSlides}
-        current={current}
-        onChange={handleChange}
-      />
+      {/* 
+        🛠️ FIX 2: Only inject child slides once layout configurations are set.
+        This blocks Framer Motion from executing vector translations on uneven server footprints.
+      */}
+      {mounted && (
+        <>
+          <HeroBackground slide={heroSlides[current]} />
+          <HeroContent slide={heroSlides[current]} />
+          <HeroProgress
+            slides={heroSlides}
+            current={current}
+            onChange={handleChange}
+          />
+        </>
+      )}
     </section>
   );
 }
