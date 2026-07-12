@@ -171,7 +171,7 @@ export default function Navbar() {
           duration-300
         "
         style={{
-          top: isScrolled || isOpen ? "12px" : "20px"
+          top: isScrolled || isOpen ? "12px" : "20px",
         }}
       >
         <svg
@@ -182,9 +182,7 @@ export default function Navbar() {
         >
           {/* Top Line */}
           <motion.path
-            animate={
-              isOpen ? { d: "M 4 17 L 18 4" } : { d: "M 3 5 L 19 5" }
-            }
+            animate={isOpen ? { d: "M 4 17 L 18 4" } : { d: "M 3 5 L 19 5" }}
             transition={{ duration: 0.25 }}
           />
 
@@ -205,9 +203,7 @@ export default function Navbar() {
 
           {/* Bottom Line */}
           <motion.path
-            animate={
-              isOpen ? { d: "M 4 4 L 18 17" } : { d: "M 3 17 L 19 17" }
-            }
+            animate={isOpen ? { d: "M 4 4 L 18 17" } : { d: "M 3 17 L 19 17" }}
             transition={{ duration: 0.25 }}
           />
         </svg>
