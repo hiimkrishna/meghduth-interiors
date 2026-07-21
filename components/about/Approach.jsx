@@ -4,13 +4,7 @@ import SplitSection from "@/components/common/SplitSection";
 
 const Approach = ({ data }) => {
   return (
-    <section
-      className="
-        py-20
-        sm:py-24
-        lg:py-32
-      "
-    >
+    <section className="py-20 sm:py-24 lg:py-32">
       <Container>
         <SectionHeader
           eyebrow={data.eyebrow}
@@ -22,7 +16,7 @@ const Approach = ({ data }) => {
           {data.steps.map((step) => (
             <SplitSection
               key={step.number}
-              label={step.number}
+              eyebrow={`STEP ${step.number}`}
               title={step.title}
               description={step.description}
               image={step.image}

@@ -34,9 +34,9 @@ const aboutData = {
       "Our process combines creativity with technical expertise, ensuring every design is visually striking, functional, and tailored to our clients' aspirations.",
     ],
 
-    image: "/images/about/story.jpg",
+    image: "/images/about-meghdut.jpeg",
 
-    imageAlt: "Interior designer discussing a residential project",
+    imageAlt: "Luxury interior by Meghdut Design Studio",
 
     reverse: false,
   },
@@ -96,9 +96,9 @@ const aboutData = {
         description:
           "We begin by understanding your lifestyle, requirements, inspiration, budget, and long-term goals.",
 
-        image: "/images/about/process-1.jpg",
+        image: "/images/projects/project-1.jpeg",
 
-        imageAlt: "Client consultation meeting",
+        imageAlt: "Project discovery phase",
 
         reverse: false,
       },
@@ -111,9 +111,9 @@ const aboutData = {
         description:
           "Layouts, mood boards, material palettes, and 3D visualizations are created to transform ideas into reality.",
 
-        image: "/images/about/process-2.jpg",
+        image: "/images/projects/project-2.jpeg",
 
-        imageAlt: "Interior design planning",
+        imageAlt: "Interior design development",
 
         reverse: true,
       },
@@ -126,9 +126,9 @@ const aboutData = {
         description:
           "We coordinate every stage of implementation, ensuring flawless craftsmanship and timely project delivery.",
 
-        image: "/images/about/process-3.jpg",
+        image: "/images/projects/project-3.jpeg",
 
-        imageAlt: "Interior construction process",
+        imageAlt: "Completed interior project",
 
         reverse: false,
       },
@@ -143,7 +143,7 @@ const aboutData = {
     description:
       "Behind every successful project is a passionate team of architects, designers, and creative thinkers dedicated to delivering exceptional spaces.",
 
-    image: "/images/about/team-preview.jpg",
+    image: "/images/why-meghdut.jpeg",
 
     imageAlt: "Meghdut Design Studio team",
 

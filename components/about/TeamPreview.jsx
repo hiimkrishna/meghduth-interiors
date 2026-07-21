@@ -1,9 +1,21 @@
-import React from 'react'
+import Container from "@/components/ui/Container";
+import SplitSection from "@/components/common/SplitSection";
 
-const TeamPreview = () => {
+const TeamPreview = ({ data }) => {
   return (
-    <div>TeamPreview</div>
-  )
-}
+    <section className="py-20 sm:py-24 lg:py-32">
+      <Container>
+        <SplitSection
+          eyebrow={data.eyebrow}
+          title={data.title}
+          description={data.description}
+          image={data.image}
+          imageAlt={data.imageAlt}
+          button={data.button}
+        />
+      </Container>
+    </section>
+  );
+};
 
-export default TeamPreview
+export default TeamPreview;
