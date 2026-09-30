@@ -1,0 +1,16 @@
+# লোকাল PostgreSQL 16 — শুধু উন্নয়নে।
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: meghdut
+    ports:
+      - "5432:5432"
+    volumes:
+      - meghdut_pgdata:/var/lib/postgresql/data
+
+volumes:
+  meghdut_pgdata:

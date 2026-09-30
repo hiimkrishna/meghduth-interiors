@@ -1,0 +1,76 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1789203518773,
+      "tag": "0000_awesome_mordo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789595479991,
+      "tag": "0001_bored_adam_warlock",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789650042303,
+      "tag": "0002_nasty_umar",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789652030441,
+      "tag": "0003_late_terrax",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789652579409,
+      "tag": "0004_happy_speed_demon",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789664584292,
+      "tag": "0005_mysterious_grandmaster",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789685415814,
+      "tag": "0006_superb_sir_ram",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1789685964482,
+      "tag": "0007_wakeful_betty_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789724992034,
+      "tag": "0008_luxuriant_hellfire_club",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790802735427,
+      "tag": "0009_page_sections",
+      "breakpoints": true
+    }
+  ]
+}

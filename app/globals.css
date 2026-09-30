@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@import "tailwindcss";
-
 :root {
   --background: #111315;
   --surface: #181b20;
@@ -39,6 +37,22 @@ h6 {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* হিরো প্রগ্রেস-বার — ৯ সেকেন্ডে ভরে, থামা অবস্থায় থেমে থাকে। */
+@keyframes hero-progress-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.hero-progress-fill {
+  animation-name: hero-progress-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
 
 button {

@@ -1,0 +1,1 @@
+ALTER TABLE "inbox_emails" ADD COLUMN "replied" boolean DEFAULT false NOT NULL;

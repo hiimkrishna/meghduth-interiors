@@ -1,0 +1,28 @@
+{
+  "name": "@my/contracts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "দুই পাশের közös চুক্তি — Zod schema + type। ব্যাকএন্ড ও ফ্রন্টএন্ড দুজনেই এটা import করে। নতুন প্রজেক্টে শুধু name বদলে (@my → @tomar-project) কপি করো।",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "zod": "^3.23.0"
+  }
+}

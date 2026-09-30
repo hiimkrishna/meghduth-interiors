@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# uploads — রানটাইমে জমে, রেপোতে নয় (.gitkeep ছাড়া)
+public/uploads/*
+!public/uploads/.gitkeep
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
