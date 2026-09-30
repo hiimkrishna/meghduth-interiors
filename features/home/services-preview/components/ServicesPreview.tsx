@@ -6,22 +6,20 @@ import Skeleton from "@/components/ui/Skeleton";
 import { useServicesPreview } from "../hooks/use-services-preview";
 
 const ServicesPreview = () => {
-  const { services, loading, error, retry } = useServicesPreview();
+  const { services, header, loading, error, retry } = useServicesPreview();
 
   return (
     // Mobile Optimization: Tamed section padding (py-16 to py-24) to prevent excessive empty space
     <section className="bg-white py-16 sm:py-24 lg:py-32">
       <Container>
-        {/* Header Block */}
+        {/* Header Block — মালিক: Homepage ট্যাব (home.servicesPreview)। */}
         <div className="mb-16">
           <p className="mb-4 text-sm uppercase tracking-[0.3em] text-neutral-500">
-            Our Services
+            {header.eyebrow}
           </p>
 
-          <h2 className="max-w-3xl text-4xl font-light leading-tight text-neutral-900 lg:text-6xl">
-            Designed for the way
-            <br />
-            you live and work.
+          <h2 className="max-w-3xl text-4xl font-light leading-tight text-neutral-900 lg:text-6xl text-balance">
+            {header.title}
           </h2>
         </div>
 

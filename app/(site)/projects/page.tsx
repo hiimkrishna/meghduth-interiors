@@ -2,6 +2,13 @@ import PageHero from "@/components/common/PageHero";
 import ProjectsGrid from "@/components/projects/ProjectsGrid";
 import ProjectCTA from "@/components/projects/ProjectCTA";
 
+import { getCachedSectionData } from "@/server/modules/page-sections/page-sections.service";
+import { asSection } from "@/server/modules/page-sections/section-content";
+import {
+  projectsHeroFallback,
+  projectsIntroFallback,
+} from "@/lib/page-fallbacks/projects";
+
 import type { Metadata } from "next";
 
 export const revalidate = 300;
@@ -34,30 +41,31 @@ export const metadata: Metadata = {
   },
 };
 
-// স্থির পেজ কনটেন্ট — API নেই, আপাতত পেজেই (TODO(M4: এপিআই এলে হুক-পথে নাও))।
+// ফলব্যাক — DB-সারি থাকলে getCachedSectionData জেতে (নিচে)। আসল পাঠ lib/page-fallbacks/projects.ts-এ।
 // প্রজেক্ট তালিকা হুক দিয়ে আসে (useProjects)।
-const hero = {
-  image: "/images/projects/project-1.jpeg",
-  breadcrumb: [{ label: "Home", href: "/" }, { label: "Projects" }],
-  eyebrow: "OUR PROJECTS",
-  title: "Spaces Designed To Inspire.",
-  description:
-    "Explore a curated collection of residential and commercial interiors that showcase Meghduth's commitment to timeless design, craftsmanship, and functionality.",
-};
+const hero = projectsHeroFallback;
 
-const intro = {
-  eyebrow: "FEATURED WORK",
-  title: "Every Project Tells A Story.",
-  description:
-    "From elegant homes to sophisticated commercial environments, every project reflects our passion for thoughtful design and meticulous execution.",
-};
+const intro = projectsIntroFallback;
 
-export default function ProjectsPage() {
+// মালিক: Projects ট্যাব — projects.hero/intro।
+export default async function ProjectsPage() {
+  let heroData = hero;
+  let introData = intro;
+  try {
+    const [heroSec, introSec] = await Promise.all([
+      getCachedSectionData("projects", "hero"),
+      getCachedSectionData("projects", "intro"),
+    ]);
+    heroData = asSection(heroSec, hero);
+    introData = asSection(introSec, intro);
+  } catch {
+    // DB ডাউন — ফলব্যাকেই রেন্ডার হয়।
+  }
   return (
     <main>
-      <PageHero data={hero} />
+      <PageHero data={heroData} />
 
-      <ProjectsGrid intro={intro} />
+      <ProjectsGrid intro={introData} />
 
       <ProjectCTA />
     </main>

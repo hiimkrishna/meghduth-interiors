@@ -1,8 +1,18 @@
 import Container from "@/components/ui/Container";
 import SectionHeader from "./SectionHeader";
 import Carousel from "./Carousel";
+import { getCachedSectionData } from "@/server/modules/page-sections/page-sections.service";
+import { asSection } from "@/server/modules/page-sections/section-content";
+import { homeTestimonialsFallback } from "@/lib/page-fallbacks/home";
 
-const Testimonials = () => {
+// মালিক: Homepage ট্যাব (home.testimonials) — শিরোনাম এখানে এডিট হয়।
+const Testimonials = async () => {
+  let header = homeTestimonialsFallback;
+  try {
+    header = asSection(await getCachedSectionData("home", "testimonials"), homeTestimonialsFallback);
+  } catch {
+    // DB ডাউন — ফলব্যাকেই রেন্ডার হয়।
+  }
   return (
     <section
       className="
@@ -22,7 +32,11 @@ const Testimonials = () => {
     >
       <Container>
         <div className="relative z-10">
-          <SectionHeader />
+          <SectionHeader
+            eyebrow={header.eyebrow}
+            title={header.title}
+            description={header.description}
+          />
 
           <Carousel />
         </div>

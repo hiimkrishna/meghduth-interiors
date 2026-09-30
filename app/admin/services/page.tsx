@@ -25,6 +25,12 @@ import {
   primaryBtnClass,
   smallBtnClass,
 } from "@/features/admin/shared/admin-ui";
+import SectionEditor from "@/features/admin/page-sections/SectionEditor";
+import {
+  servicesHeroFallback,
+  servicesIntroFallback,
+  servicesProcessFallback,
+} from "@/lib/page-fallbacks/services";
 
 type Mode = { name: "list" } | { name: "new" } | { name: "edit"; item: ServiceItem };
 
@@ -127,6 +133,61 @@ export default function AdminServicesPage(): ReactNode {
           </ul>
         </AdminCard>
       )}
+      <h2 className="mb-3 mt-8 text-sm font-semibold uppercase tracking-wider text-[#b6bcc5]">
+        Page content
+      </h2>
+      <div className="space-y-6">
+        <SectionEditor
+          page="services"
+          section="hero"
+          title="Page hero"
+          hint="Top banner of /services."
+          initial={servicesHeroFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+            { kind: "text", key: "image", label: "Image path or key" },
+          ]}
+        />
+        <SectionEditor
+          page="services"
+          section="intro"
+          title="List intro"
+          hint="Header above the services list."
+          initial={servicesIntroFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+          ]}
+        />
+        <SectionEditor
+          page="services"
+          section="process"
+          title="Process"
+          hint="Steps block on /services."
+          initial={servicesProcessFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+            {
+              kind: "list",
+              key: "steps",
+              label: "Steps",
+              addLabel: "Add step",
+              itemFields: [
+                { key: "number", label: "Number (01, 02…)", kind: "text" },
+                { key: "icon", label: "Icon name", kind: "text" },
+                { key: "title", label: "Title", kind: "text" },
+                { key: "description", label: "Description", kind: "textarea" },
+                { key: "highlight", label: "Highlight line", kind: "text" },
+              ],
+            },
+          ]}
+        />
+      </div>
     </>
   );
 }

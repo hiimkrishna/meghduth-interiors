@@ -1,4 +1,10 @@
-const SectionHeader = () => {
+interface SectionHeaderProps {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}
+
+const SectionHeader = ({ eyebrow, title, description }: SectionHeaderProps) => {
   return (
     <div className="mx-auto mb-16 max-w-3xl text-center">
       <p
@@ -10,7 +16,7 @@ const SectionHeader = () => {
           text-[#B79A6A]
         "
       >
-        Testimonials
+        {eyebrow ?? "Testimonials"}
       </p>
 
       <h2
@@ -25,9 +31,7 @@ const SectionHeader = () => {
           lg:text-6xl
         "
       >
-        What Our Clients
-        <br />
-        Say About Us
+        {title ?? "What Our Clients Say About Us"}
       </h2>
 
       <p
@@ -43,9 +47,8 @@ const SectionHeader = () => {
           sm:text-lg
         "
       >
-        Every project is a collaboration between our vision and our clients&apos;
-        dreams. Discover the experiences of those who trusted Meghduth to
-        transform their spaces.
+        {description ??
+          "Every project is a collaboration between our vision and our clients' dreams. Discover the experiences of those who trusted Meghduth to transform their spaces."}
       </p>
     </div>
   );

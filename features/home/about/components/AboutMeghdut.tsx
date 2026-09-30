@@ -1,8 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import { getCachedSectionData } from "@/server/modules/page-sections/page-sections.service";
-import { asList } from "@/server/modules/page-sections/section-content";
+import { asList, asSection } from "@/server/modules/page-sections/section-content";
 import { aboutStatsFallback } from "@/lib/page-fallbacks/about";
+import { homeAboutFallback } from "@/lib/page-fallbacks/home";
 
 interface StatItem {
   number: string;
@@ -12,12 +14,17 @@ interface StatItem {
 // কোড-ফলব্যাক — অ্যাডমিনে about.stats সেভ না হওয়া পর্যন্ত এটাই দেখায়।
 const FALLBACK_STATS: StatItem[] = aboutStatsFallback.stats;
 
-// মালিক: About ট্যাব (about.stats)। হোম শুধু পড়ে, এডিট About-এ।
+// শিরোনামের মালিক: Homepage ট্যাব (home.about)। পরিসংখ্যানের মালিক: About ট্যাব (about.stats)।
 const AboutMeghdut = async () => {
   let stats = FALLBACK_STATS;
+  let header = homeAboutFallback;
   try {
-    const data = await getCachedSectionData("about", "stats");
-    if (data !== null) stats = asList<StatItem>(data.stats, FALLBACK_STATS);
+    const [statsSec, headerSec] = await Promise.all([
+      getCachedSectionData("about", "stats"),
+      getCachedSectionData("home", "about"),
+    ]);
+    if (statsSec !== null) stats = asList<StatItem>(statsSec.stats, FALLBACK_STATS);
+    header = asSection(headerSec, homeAboutFallback);
   } catch {
     // DB ডাউন — ফলব্যাকেই রেন্ডার হয়।
   }
@@ -44,17 +51,15 @@ const AboutMeghdut = async () => {
             {/* Content Layer */}
             <div className="order-last lg:order-first">
               <p className="mb-3 sm:mb-5 text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-neutral-500">
-                About Meghduth
+                {header.eyebrow}
               </p>
 
               <h2 className="text-3xl sm:text-4xl font-light leading-tight tracking-tight text-neutral-900 lg:text-6xl text-balance">
-                Spaces designed with emotion, elegance, and purpose.
+                {header.title}
               </h2>
 
               <p className="mt-4 sm:mt-8 max-w-xl text-sm sm:text-base leading-relaxed text-neutral-600">
-                Meghduth is an interior design studio dedicated to creating
-                timeless spaces that blend functionality with refined
-                aesthetics. We transform ideas into beautiful experiences.
+                {header.description}
               </p>
 
               {/* Stats Grid - Fixed mobile layout stacking constraints */}
@@ -74,13 +79,13 @@ const AboutMeghdut = async () => {
                 ))}
               </div>
 
-              {/* Mobile Accessible CTA Button */}
-              <button
-                type="button"
+              {/* Mobile Accessible CTA Button — About পেজে যায়। */}
+              <Link
+                href="/about"
                 className="mt-10 sm:mt-12 w-full sm:w-auto inline-flex justify-center items-center border border-neutral-900 px-8 py-3.5 text-sm font-medium tracking-wide text-neutral-900 transition duration-300 hover:bg-neutral-900 hover:text-white active:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2"
               >
-                Discover More
-              </button>
+                {header.buttonLabel}
+              </Link>
             </div>
           </div>
         </div>

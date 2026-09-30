@@ -3,10 +3,19 @@
 import { useCallback, useEffect, useState } from "react";
 import type { ProjectCardItem } from "../components/ProjectCard";
 import { getFeaturedProjects } from "../services/featured-projects.service";
+import { getHomeSection } from "../../section-headers/section-headers.service";
+import { homeFeaturedFallback } from "@/lib/page-fallbacks/home";
+
+export interface FeaturedHeader {
+  badge: string;
+  title: string;
+  description: string;
+}
 
 export interface UseFeaturedProjectsResult {
   projects: ProjectCardItem[];
   data: ProjectCardItem[];
+  header: FeaturedHeader;
   loading: boolean;
   error: string | null;
   retry: () => void;
@@ -14,6 +23,7 @@ export interface UseFeaturedProjectsResult {
 
 export function useFeaturedProjects(): UseFeaturedProjectsResult {
   const [projects, setProjects] = useState<ProjectCardItem[]>([]);
+  const [header, setHeader] = useState<FeaturedHeader>(homeFeaturedFallback);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [nonce, setNonce] = useState<number>(0);
@@ -29,10 +39,14 @@ export function useFeaturedProjects(): UseFeaturedProjectsResult {
 
   useEffect(() => {
     let active = true;
-    getFeaturedProjects()
-      .then((data) => {
+    Promise.all([
+      getFeaturedProjects(),
+      getHomeSection("featured", homeFeaturedFallback),
+    ])
+      .then(([items, head]) => {
         if (active) {
-          setProjects(data);
+          setProjects(items);
+          setHeader(head);
           setLoading(false);
         }
       })
@@ -49,5 +63,5 @@ export function useFeaturedProjects(): UseFeaturedProjectsResult {
     };
   }, [nonce]);
 
-  return { projects, data: projects, loading, error, retry };
+  return { projects, data: projects, header, loading, error, retry };
 }

@@ -5,10 +5,17 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import HeroSlidesManager from "@/features/admin/hero-slides/HeroSlidesManager";
+import SectionEditor from "@/features/admin/page-sections/SectionEditor";
 import {
   AdminCard,
   AdminPageHeader,
 } from "@/features/admin/shared/admin-ui";
+import {
+  homeAboutFallback,
+  homeFeaturedFallback,
+  homeServicesPreviewFallback,
+  homeTestimonialsFallback,
+} from "@/lib/page-fallbacks/home";
 
 // হোমপেজ কম্পোজিশন — সেকশন → মালিক ট্যাব। নতুন সেকশন এলে এখানে এক সারি যোগই যথেষ্ট।
 const COMPOSITION: Array<{ section: string; owner: string; href: string; note: string }> = [
@@ -66,6 +73,57 @@ export default function AdminHomepagePage(): ReactNode {
 
       <div className="mb-6">
         <HeroSlidesManager />
+      </div>
+
+      <div className="mb-6 space-y-6">
+        <SectionEditor
+          page="home"
+          section="featured"
+          title="Featured projects header"
+          hint="Title block above the theatrical showcase."
+          initial={homeFeaturedFallback}
+          fields={[
+            { kind: "text", key: "badge", label: "Badge" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+          ]}
+        />
+        <SectionEditor
+          page="home"
+          section="servicesPreview"
+          title="Services preview header"
+          hint="Title block above the services list."
+          initial={homeServicesPreviewFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+          ]}
+        />
+        <SectionEditor
+          page="home"
+          section="testimonials"
+          title="Testimonials header"
+          hint="Title block above the testimonial carousel."
+          initial={homeTestimonialsFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+          ]}
+        />
+        <SectionEditor
+          page="home"
+          section="about"
+          title="About block"
+          hint="Homepage about teaser (stats are edited in the About tab)."
+          initial={homeAboutFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+            { kind: "text", key: "buttonLabel", label: "Button label" },
+          ]}
+        />
       </div>
 
       <AdminCard>

@@ -25,6 +25,12 @@ import {
   primaryBtnClass,
   smallBtnClass,
 } from "@/features/admin/shared/admin-ui";
+import SectionEditor from "@/features/admin/page-sections/SectionEditor";
+import {
+  teamHeroFallback,
+  teamIntroFallback,
+  teamJoinFallback,
+} from "@/lib/page-fallbacks/team";
 
 type Mode = { name: "list" } | { name: "new" } | { name: "edit"; item: TeamMember };
 
@@ -114,6 +120,50 @@ export default function AdminTeamPage(): ReactNode {
           </ul>
         </AdminCard>
       )}
+      <h2 className="mb-3 mt-8 text-sm font-semibold uppercase tracking-wider text-[#b6bcc5]">
+        Page content
+      </h2>
+      <div className="space-y-6">
+        <SectionEditor
+          page="team"
+          section="hero"
+          title="Page hero"
+          hint="Top banner of /team."
+          initial={teamHeroFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+            { kind: "text", key: "image", label: "Image path or key" },
+          ]}
+        />
+        <SectionEditor
+          page="team"
+          section="intro"
+          title="Members intro"
+          hint="Header above the team grid."
+          initial={teamIntroFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+          ]}
+        />
+        <SectionEditor
+          page="team"
+          section="join"
+          title="Work with us"
+          hint="Closing block on /team (button link is fixed)."
+          initial={teamJoinFallback}
+          fields={[
+            { kind: "text", key: "eyebrow", label: "Eyebrow" },
+            { kind: "text", key: "title", label: "Title" },
+            { kind: "textarea", key: "description", label: "Description" },
+            { kind: "text", key: "image", label: "Image path or key" },
+            { kind: "text", key: "imageAlt", label: "Image alt text" },
+          ]}
+        />
+      </div>
     </>
   );
 }

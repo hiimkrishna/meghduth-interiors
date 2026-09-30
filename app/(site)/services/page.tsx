@@ -4,6 +4,14 @@ import ProcessPreview from "@/components/services/ProcessPreview";
 
 import CTA from "@/components/home/cta/CTA";
 
+import { getCachedSectionData } from "@/server/modules/page-sections/page-sections.service";
+import { asSection } from "@/server/modules/page-sections/section-content";
+import {
+  servicesHeroFallback,
+  servicesIntroFallback,
+  servicesProcessFallback,
+} from "@/lib/page-fallbacks/services";
+
 import type { Metadata } from "next";
 
 export const revalidate = 300;
@@ -36,73 +44,38 @@ export const metadata: Metadata = {
   },
 };
 
-// স্থির পেজ কনটেন্ট — API নেই, আপাতত পেজেই (TODO(M4: এপিআই এলে হুক-পথে নাও))।
+// ফলব্যাক — DB-সারি থাকলে getCachedSectionData জেতে (নিচে)। আসল পাঠ lib/page-fallbacks/services.ts-এ।
 // সেবা তালিকা হুক দিয়ে আসে (useServices)।
-const hero = {
-  image: "/images/hero/hero1.jpeg",
-  breadcrumb: [{ label: "Home", href: "/" }, { label: "Services" }],
-  eyebrow: "OUR SERVICES",
-  title: "Design Solutions Tailored To Every Space.",
-  description:
-    "From elegant residences to sophisticated commercial environments, Meghduth Design Studio delivers thoughtful interior and architectural solutions designed around your lifestyle and vision.",
-};
+const hero = servicesHeroFallback;
 
-const intro = {
-  eyebrow: "WHAT WE OFFER",
-  title: "Comprehensive Interior Design Services.",
-  description:
-    "We combine creativity, functionality, and craftsmanship to deliver spaces that are timeless, practical, and uniquely yours.",
-};
+const intro = servicesIntroFallback;
 
-const process = {
-  eyebrow: "OUR PROCESS",
-  title: "From Vision To Reality.",
-  description:
-    "Every project follows a carefully structured process that keeps communication transparent while ensuring exceptional design and flawless execution.",
-  steps: [
-    {
-      number: "01",
-      icon: "MessageCircle",
-      title: "Consultation & Discovery",
-      description:
-        "We begin with an in-depth consultation to understand your lifestyle, functional needs, aesthetic preferences, budget, and timeline.",
-      highlight: "Understanding your vision.",
-    },
-    {
-      number: "02",
-      icon: "LayoutGrid",
-      title: "Concept & Space Planning",
-      description:
-        "Our designers create layouts, mood boards, furniture arrangements, and material palettes to shape the overall direction of your project.",
-      highlight: "Turning ideas into concepts.",
-    },
-    {
-      number: "03",
-      icon: "PencilRuler",
-      title: "Design Development",
-      description:
-        "Detailed drawings, lighting plans, finishes, furniture selections, and technical specifications are finalized before implementation.",
-      highlight: "Every detail carefully refined.",
-    },
-    {
-      number: "04",
-      icon: "Hammer",
-      title: "Execution & Delivery",
-      description:
-        "We oversee construction, coordinate contractors, monitor quality, and ensure every finishing touch meets our standards before handover.",
-      highlight: "Delivered with precision.",
-    },
-  ],
-};
+const process = servicesProcessFallback;
 
-export default function ServicesPage() {
+// মালিক: Services ট্যাব — services.hero/intro/process।
+export default async function ServicesPage() {
+  let heroData = hero;
+  let introData = intro;
+  let processData = process;
+  try {
+    const [heroSec, introSec, processSec] = await Promise.all([
+      getCachedSectionData("services", "hero"),
+      getCachedSectionData("services", "intro"),
+      getCachedSectionData("services", "process"),
+    ]);
+    heroData = asSection(heroSec, hero);
+    introData = asSection(introSec, intro);
+    processData = asSection(processSec, process);
+  } catch {
+    // DB ডাউন — ফলব্যাকেই রেন্ডার হয়।
+  }
   return (
     <main>
-      <PageHero data={hero} />
+      <PageHero data={heroData} />
 
-      <ServicesList intro={intro} />
+      <ServicesList intro={introData} />
 
-      <ProcessPreview data={process} />
+      <ProcessPreview data={processData} />
 
       <CTA />
     </main>

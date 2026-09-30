@@ -10,7 +10,7 @@ import TheatricalFeature from "./TheatricalFeature";
 import { useFeaturedProjects } from "../hooks/use-featured-projects";
 
 export default function FeaturedProjects() {
-  const { projects, loading, error, retry } = useFeaturedProjects();
+  const { projects, header, loading, error, retry } = useFeaturedProjects();
   const [head, ...rest] = projects;
 
   return (
@@ -18,9 +18,9 @@ export default function FeaturedProjects() {
     <section className="bg-[#0F1115] py-16 sm:py-24 md:py-32">
       <Container>
         <SectionHeading
-          badge="Portfolio"
-          title="Featured Projects"
-          description="Every project reflects our commitment to timeless design, meticulous craftsmanship, and spaces that enhance everyday living."
+          badge={header.badge}
+          title={header.title}
+          description={header.description}
         />
 
         {/*

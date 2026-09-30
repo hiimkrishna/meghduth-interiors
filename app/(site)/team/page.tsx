@@ -4,6 +4,14 @@ import JoinTeam from "@/components/team/JoinTeam";
 
 import CTA from "@/components/home/cta/CTA";
 
+import { getCachedSectionData } from "@/server/modules/page-sections/page-sections.service";
+import { asSection } from "@/server/modules/page-sections/section-content";
+import {
+  teamHeroFallback,
+  teamIntroFallback,
+  teamJoinFallback,
+} from "@/lib/page-fallbacks/team";
+
 import type { Metadata } from "next";
 
 export const revalidate = 300;
@@ -36,43 +44,38 @@ export const metadata: Metadata = {
   },
 };
 
-// স্থির পেজ কনটেন্ট — API নেই, আপাতত পেজেই (TODO(M4: এপিআই এলে হুক-পথে নাও))।
+// ফলব্যাক — DB-সারি থাকলে getCachedSectionData জেতে (নিচে)। আসল পাঠ lib/page-fallbacks/team.ts-এ।
 // সদস্য তালিকা হুক দিয়ে আসে (useTeam)।
-const hero = {
-  image: "/images/hero/hero2.jpeg",
-  breadcrumb: [{ label: "Home", href: "/" }, { label: "Team" }],
-  eyebrow: "OUR TEAM",
-  title: "The Creative Minds Behind Every Space.",
-  description:
-    "Meet the architects, designers, and creative professionals who transform ideas into timeless spaces with passion, precision, and purpose.",
-};
+const hero = teamHeroFallback;
 
-const intro = {
-  eyebrow: "MEET THE TEAM",
-  title: "Designing Together, Creating Excellence.",
-  description:
-    "Every successful project is the result of collaboration, creativity, and a shared commitment to exceptional design.",
-};
+const intro = teamIntroFallback;
 
-const join = {
-  eyebrow: "WORK WITH US",
-  title: "Let's Create Something Exceptional Together.",
-  description:
-    "Whether you're planning your dream home, a commercial space, or a complete renovation, our team is ready to bring your vision to life.",
-  image: "/images/why-meghdut.jpeg",
-  imageAlt: "Meghduth Design Studio",
-  button: { label: "Contact Us", href: "/contact" },
-  reverse: true,
-};
+const join = teamJoinFallback;
 
-export default function TeamPage() {
+// মালিক: Team ট্যাব — team.hero/intro/join।
+export default async function TeamPage() {
+  let heroData = hero;
+  let introData = intro;
+  let joinData = join;
+  try {
+    const [heroSec, introSec, joinSec] = await Promise.all([
+      getCachedSectionData("team", "hero"),
+      getCachedSectionData("team", "intro"),
+      getCachedSectionData("team", "join"),
+    ]);
+    heroData = asSection(heroSec, hero);
+    introData = asSection(introSec, intro);
+    joinData = asSection(joinSec, join);
+  } catch {
+    // DB ডাউন — ফলব্যাকেই রেন্ডার হয়।
+  }
   return (
     <main>
-      <PageHero data={hero} />
+      <PageHero data={heroData} />
 
-      <TeamMembers intro={intro} />
+      <TeamMembers intro={introData} />
 
-      <JoinTeam data={join} />
+      <JoinTeam data={joinData} />
 
       <CTA />
     </main>

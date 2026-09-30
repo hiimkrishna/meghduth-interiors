@@ -3,10 +3,18 @@
 import { useCallback, useEffect, useState } from "react";
 import type { ServiceItem } from "@/packages/contracts/src/service.schema";
 import { getServicesPreview } from "../services/services-preview.service";
+import { getHomeSection } from "../../section-headers/section-headers.service";
+import { homeServicesPreviewFallback } from "@/lib/page-fallbacks/home";
+
+export interface ServicesPreviewHeader {
+  eyebrow: string;
+  title: string;
+}
 
 export interface UseServicesPreviewResult {
   services: ServiceItem[];
   data: ServiceItem[];
+  header: ServicesPreviewHeader;
   loading: boolean;
   error: string | null;
   retry: () => void;
@@ -14,6 +22,7 @@ export interface UseServicesPreviewResult {
 
 export function useServicesPreview(): UseServicesPreviewResult {
   const [services, setServices] = useState<ServiceItem[]>([]);
+  const [header, setHeader] = useState<ServicesPreviewHeader>(homeServicesPreviewFallback);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [nonce, setNonce] = useState<number>(0);
@@ -29,10 +38,14 @@ export function useServicesPreview(): UseServicesPreviewResult {
 
   useEffect(() => {
     let active = true;
-    getServicesPreview()
-      .then((data) => {
+    Promise.all([
+      getServicesPreview(),
+      getHomeSection("servicesPreview", homeServicesPreviewFallback),
+    ])
+      .then(([items, head]) => {
         if (active) {
-          setServices(data);
+          setServices(items);
+          setHeader(head);
           setLoading(false);
         }
       })
@@ -47,5 +60,5 @@ export function useServicesPreview(): UseServicesPreviewResult {
     };
   }, [nonce]);
 
-  return { services, data: services, loading, error, retry };
+  return { services, data: services, header, loading, error, retry };
 }
